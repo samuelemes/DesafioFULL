@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paschoalotto.Domain", "src\Paschoalotto.Domain\Paschoalotto.Domain.csproj", "{18519A1E-1828-47A9-9EAA-10F427DC2DFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paschoalotto.Core", "src\Paschoalotto.Core\Paschoalotto.Core.csproj", "{B81D23AD-F656-4DF6-B479-704DF7A02FDD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{18519A1E-1828-47A9-9EAA-10F427DC2DFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18519A1E-1828-47A9-9EAA-10F427DC2DFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18519A1E-1828-47A9-9EAA-10F427DC2DFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
