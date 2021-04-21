@@ -1,11 +1,9 @@
 ﻿using App.Domain.Models;
-using App.Domain.Models.Seguranca;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace App.Data.Context
 {
-    public class AppDbContext : IdentityDbContext<AppUser, AppRole, int>
+    public class AppDbContext : DbContext //IdentityDbContext<AppUser, AppRole, int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

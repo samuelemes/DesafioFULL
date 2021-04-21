@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\App.Data\App.Data.csproj" />
+    <ProjectReference Include="..\Paschoalotto.Core\App.Core.csproj" />
+    <ProjectReference Include="..\Paschoalotto.Domain\App.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
