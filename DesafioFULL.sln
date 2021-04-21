@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paschoalotto.Domain", "src\Paschoalotto.Domain\Paschoalotto.Domain.csproj", "{18519A1E-1828-47A9-9EAA-10F427DC2DFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paschoalotto.Domain", "src\Paschoalotto.Domain\Paschoalotto.Domain.csproj", "{18519A1E-1828-47A9-9EAA-10F427DC2DFA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Paschoalotto.Core", "src\Paschoalotto.Core\Paschoalotto.Core.csproj", "{B81D23AD-F656-4DF6-B479-704DF7A02FDD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paschoalotto.Core", "src\Paschoalotto.Core\Paschoalotto.Core.csproj", "{B81D23AD-F656-4DF6-B479-704DF7A02FDD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Data", "src\App.Data\App.Data.csproj", "{EA2962BF-0E8C-45C7-8B99-B720328937BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App.Api", "App.Api\App.Api.csproj", "{B51CC871-B2DA-4A33-B086-B6A9AD410D44}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B81D23AD-F656-4DF6-B479-704DF7A02FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2962BF-0E8C-45C7-8B99-B720328937BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2962BF-0E8C-45C7-8B99-B720328937BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2962BF-0E8C-45C7-8B99-B720328937BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2962BF-0E8C-45C7-8B99-B720328937BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B51CC871-B2DA-4A33-B086-B6A9AD410D44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B51CC871-B2DA-4A33-B086-B6A9AD410D44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B51CC871-B2DA-4A33-B086-B6A9AD410D44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B51CC871-B2DA-4A33-B086-B6A9AD410D44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
