@@ -1,8 +1,8 @@
-﻿using Paschoalotto.Core.Models.Interfaces;
+﻿using App.Core.Repository.Interfaces;
 
-namespace Paschoalotto.Domain.Models.Interfaces
+namespace App.Domain.Models.Interfaces
 {
-    interface IDocumento : IRepository<Documento>
+    public interface IDocumento : IRepository<Documento>
     {
     }
 }

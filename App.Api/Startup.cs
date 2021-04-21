@@ -1,15 +1,21 @@
 using App.Data.Context;
+using App.Data.Repository;
+using App.Data.Repository.Interfaces;
+using App.Domain.Models.Seguranca;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Paschoalotto.Domain.Models.Seguranca;
+using SimpleInjector;
+using SimpleInjector.Integration.Web;
+using System.Reflection;
 
 namespace App.Api
 {
     public class Startup
     {
+        private Container container = new Container();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,11 +31,28 @@ namespace App.Api
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            InitializeContainer();
+        }
+
+        private void InitializeContainer()
+        {
+            container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
+
+            container.Register<AppDbContext>(Lifestyle.Scoped);
+
+            container.Register<IPessoaRepository, PessoaRepository>(Lifestyle.Scoped);
+            container.Register<IDocumentoRepository, DocumentoRepository>(Lifestyle.Scoped);
+            container.Register<IDocumentoBaixaRepository, DocumentoBaixaRepository>(Lifestyle.Scoped);
+
+            container.RegisterInstance(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //app.UseSimpleInjector(container);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -43,8 +66,6 @@ namespace App.Api
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -55,6 +76,8 @@ namespace App.Api
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            container.Verify();
         }
     }
 }

@@ -15,11 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Paschoalotto.Domain\Paschoalotto.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Repository\" />
+    <ProjectReference Include="..\Paschoalotto.Domain\App.Domain.csproj" />
   </ItemGroup>
 
 </Project>

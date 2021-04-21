@@ -1,7 +1,7 @@
-﻿using Paschoalotto.Core.Models;
+﻿using App.Core.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Paschoalotto.Domain.Models
+namespace App.Domain.Models
 {
     public class DocumentoBaixa : Entity
     {

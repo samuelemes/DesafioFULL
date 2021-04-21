@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using App.Domain.Models;
+using App.Domain.Models.Seguranca;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Paschoalotto.Domain.Models;
-using Paschoalotto.Domain.Models.Seguranca;
-using System.Linq;
 
 namespace App.Data.Context
 {
@@ -20,18 +19,6 @@ namespace App.Data.Context
 
         protected void OnConfiguring(ModelBuilder optionsBuilder)
         {
-            foreach (var item in optionsBuilder.Model.GetEntityTypes())
-            {
-                var properties = item.GetProperties().Where(p => p.ClrType == typeof(string));
-                foreach (var prop in properties)
-                {
-                    if (string.IsNullOrEmpty(prop.GetColumnType()))
-                    {
-                        prop.SetMaxLength(100);
-                        prop.SetColumnType("VARCHAR(100)");
-                    }
-                }
-            }
         }
 
         public DbSet<Pessoa> Pessoas { get; set; }

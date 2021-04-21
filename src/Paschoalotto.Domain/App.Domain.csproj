@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Paschoalotto.Core\Paschoalotto.Core.csproj" />
+    <ProjectReference Include="..\Paschoalotto.Core\App.Core.csproj" />
   </ItemGroup>
 
 </Project>

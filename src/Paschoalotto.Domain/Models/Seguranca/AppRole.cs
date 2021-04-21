@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace Paschoalotto.Domain.Models.Seguranca
+namespace App.Domain.Models.Seguranca
 {
     public class AppRole : IdentityRole<int>
     {

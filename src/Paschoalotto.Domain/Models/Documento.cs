@@ -1,8 +1,10 @@
-﻿using Paschoalotto.Core.Models;
+﻿using App.Core.Models;
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Paschoalotto.Domain.Models
+namespace App.Domain.Models
 {
     public class Documento : Entity
     {
@@ -19,10 +21,19 @@ namespace Paschoalotto.Domain.Models
 
 
         public int Numero { get; set; }
-        public decimal? Multa { get; set; }
-        public decimal? Juros { get; set; }
+
+
+        [Required]
+        [Column(TypeName = "Date")]
+        public DateTime DataVencimento { get; set; } = DateTime.Now;
+
+
+        public decimal? Juros { get; set; } = 0;
+
+
+        public decimal? Multa { get; set; } = 0;
+
+
         public int Parcela { get; set; } = 1;
-
-
     }
 }

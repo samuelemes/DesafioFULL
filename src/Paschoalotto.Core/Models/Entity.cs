@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Paschoalotto.Core.Models
+namespace App.Core.Models
 {
     public abstract class Entity
     {
@@ -11,8 +11,8 @@ namespace Paschoalotto.Core.Models
         public int Id { get; set; }
 
         public DateTimeOffset DataInclusao { get; set; } = DateTimeOffset.Now;
-        public Guid IdUsuarioInclusao { get; set; }
-        public DateTimeOffset DataAlteracao { get; set; }
-        public Guid? IdUsuarioAlteracao { get; set; }
+        public int IdUsuarioInclusao { get; set; } = 0;
+        public DateTimeOffset? DataAlteracao { get; set; }
+        public int? IdUsuarioAlteracao { get; set; }
     }
 }
