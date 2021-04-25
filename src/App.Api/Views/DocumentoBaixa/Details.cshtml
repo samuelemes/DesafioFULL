@@ -1,14 +1,13 @@
 ﻿@model App.Api.ViewModels.DocumentoViewModel
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Details";
 }
 
-<h2>@ViewBag.Title</h2>
+<h2>Details</h2>
 
-<h3>Tem Certeza que quer deletar este registro?</h3>
 <div>
-    <h4>Documento</h4>
+    <h4>EnderecoViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -32,13 +31,8 @@
         </dt>
     </dl>
 
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
-    }
 </div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

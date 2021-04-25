@@ -1,0 +1,74 @@
+﻿@model IEnumerable<App.Api.ViewModels.DocumentoViewModel>
+
+@{
+    ViewBag.Title = "Lista de Títulos Pagos";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Número")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pessoa.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.QtdeParcelas)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorOriginal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DiasEmAtrado)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataVencimento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataPagamento)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorPago)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorDesconto)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Pessoa.Nome)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.QtdeParcelas)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DocumentoOrigem.Valor)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DiasEmAtrado)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DataVencimento)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DataPagamento)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ValorPago)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ValorDesconto)
+    </td>
+</tr>
+}
+
+</table>

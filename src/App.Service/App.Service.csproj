@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Data\App.Data.csproj" />
-    <ProjectReference Include="..\Paschoalotto.Core\App.Core.csproj" />
-    <ProjectReference Include="..\Paschoalotto.Domain\App.Domain.csproj" />
+    <ProjectReference Include="..\App.Core\App.Core.csproj" />
+    <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
   </ItemGroup>
 
 </Project>

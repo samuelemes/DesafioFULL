@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="bootstrap.chosen" Version="1.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -16,8 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\App.Service\App.Service.csproj" />
-    <ProjectReference Include="..\Paschoalotto.Core\App.Core.csproj" />
-    <ProjectReference Include="..\Paschoalotto.Domain\App.Domain.csproj" />
+    <ProjectReference Include="..\App.Core\App.Core.csproj" />
+    <ProjectReference Include="..\App.Domain\App.Domain.csproj" />
   </ItemGroup>
 
 </Project>

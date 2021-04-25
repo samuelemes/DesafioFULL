@@ -1,39 +1,45 @@
 ﻿using App.Core.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace App.Domain.Models
 {
     public class Documento : Entity
     {
-        //public int? IdDocumentoOrigem { get; set; }
-        [JsonIgnore]
+        public Documento()
+        {
+            Baixas = new List<DocumentoBaixa>();
+        }
         [ForeignKey("idDocumentoOrigem")]
+        public int? idDocumentoOrigem { get; set; }
         public virtual Documento DocumentoOrigem { get; set; }
+
+        public virtual TipoDocumento TipoDocumento { get; set; }
 
 
         public int IdPessoa { get; set; }
-        [JsonIgnore]
         [ForeignKey("IdPessoa")]
         public virtual Pessoa Pessoa { get; set; }
 
 
-        public int Numero { get; set; }
-
-
         [Required]
         [Column(TypeName = "Date")]
+        [DataType(DataType.Date)]
         public DateTime DataVencimento { get; set; } = DateTime.Now;
 
 
         public decimal? Juros { get; set; } = 0;
+        public decimal Valor { get; set; }
 
 
         public decimal? Multa { get; set; } = 0;
 
 
         public int Parcela { get; set; } = 1;
+
+
+        public List<DocumentoBaixa> Baixas { get; set; }
     }
 }

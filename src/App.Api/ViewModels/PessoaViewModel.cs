@@ -7,10 +7,14 @@ namespace App.Api.ViewModels
     {
         [Required]
         [StringLength(100, ErrorMessage = "O campo {0} precisa ter {1} caracteres")]
+        [Display(Name = "Nome do devedor")]
+        [DataType(DataType.Text)]
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(11, ErrorMessage = "O campo {0} precisa ter {1} caracteres")]
+        [StringLength(11, ErrorMessage = "O campo {0} precisa ter {1} caracteres"), MaxLength(14)]
+        [DisplayFormat(DataFormatString = "000\\.000\\.000-00")]
+        [Display(Name = "Número do CPF")]
         public string Cpf { get; set; }
     }
 }

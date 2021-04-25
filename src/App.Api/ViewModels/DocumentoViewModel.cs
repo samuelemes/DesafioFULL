@@ -1,19 +1,34 @@
-﻿using System;
+﻿using App.Core.Api.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace App.Api.ViewModels
 {
-    public class DocumentoViewModel 
+    public class DocumentoViewModel : BaseViewModel
     {
-        [Key]
-        public int Id { get; set; }
+        public int? idDocumentoOrigem { get; set; }
 
-        public int Numero { get; set; }
-        public string NomeDevedor { get; set; }
+        [Required]
+        [DisplayName("Tipo Documento")]
+        public TipoDocumentoViewModel TipoDocumento { get; set; }
+        
+        public DocumentoViewModel DocumentoOrigem { get; set; }
+
+        public PessoaViewModel Pessoa { get; set; }
 
 
         [Required]
+        [Display(Name = "Data de Vencimento")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime DataVencimento { get; set; } = DateTime.Now;
+
+        [Display(Name = "Data do Pagamento")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTimeOffset? DataPagamento { get; set; } = DateTime.Now;
 
 
         public decimal? Juros { get; set; } = 0;
@@ -23,9 +38,37 @@ namespace App.Api.ViewModels
 
 
         public int Parcela { get; set; } = 1;
-        public int QtdeParcelas { get; set; }
+
+        [Display(Name = "Nº Parcelas")]
+        public int QtdeParcelas { get; set; } = 1;
+
+
+        [DataType(DataType.Currency)]
+        public decimal Valor { get; set; }
+
+
+        
+        [Display(Name = "Valor original")]
+        [DataType(DataType.Currency)]
         public decimal ValorOriginal { get; set; }
+
+        [Display(Name = "Valor Pago")]
+        [DataType(DataType.Currency)]
+        public decimal ValorPago { get; set; }
+
+        [Display(Name = "Valor Desconto")]
+        [DataType(DataType.Currency)]
+        public decimal ValorDesconto { get; set; }
+
+
+
+        [Display(Name = "Valor atualizado")]
+        [DataType(DataType.Currency)]
         public decimal ValorAtualizado { get; set; }
-        public int DiasEmAtrado { get; set; }
+
+
+        
+        [Display(Name = "Dias em atraso")]
+        public int? DiasEmAtrado { get; set; }
     }
 }

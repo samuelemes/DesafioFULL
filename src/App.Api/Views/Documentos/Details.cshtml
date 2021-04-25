@@ -4,77 +4,51 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@ViewBag.Title</h2>
 
 <div>
     <h4>EnderecoViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Logradouro)
-        </dt>
+        <div style="display:flex">
+            <dt class="float-left">
+                @Html.DisplayNameFor(model => model.Id)
+            </dt>
+            <dd class="float-left">
+                @Html.DisplayFor(model => model.Id)
+            </dd>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Logradouro)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Numero)
-        </dt>
+        <div style="display:flex">
+            <dt class="float-left">
+                @Html.DisplayNameFor(model => model.Pessoa.Nome)
+            </dt>
+            <dd class="float-left">
+                @Html.DisplayFor(model => model.Pessoa.Nome)
+            </dd>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Numero)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Complemento)
-        </dt>
+        <div style="display:flex">
+            <dt class="float-left">
+                @Html.DisplayNameFor(model => model.Pessoa.Cpf)
+            </dt>
+            <dd class="float-left">
+                @Html.DisplayFor(model => model.Pessoa.Cpf)
+            </dd>
+        </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Complemento)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Bairro)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Bairro)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cep)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cep)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Cidade)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cidade)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FornecedorId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FornecedorId)
-        </dd>*@
-
-    </dl>
+        <div style="display:flex">
+            <dt class="float-left">
+                @Html.DisplayNameFor(model => model.DataVencimento)
+            </dt>
+            <dd class="float-left">
+                @Html.DisplayFor(model => model.DataVencimento)
+            </dd>
+        </div>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |

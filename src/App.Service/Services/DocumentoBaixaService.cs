@@ -4,6 +4,7 @@ using App.Data.Repository.Interfaces;
 using App.Domain.Models;
 using App.Service.Models;
 using App.Service.Services.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,14 +20,16 @@ namespace App.Service.Services
         {
             _repository = repository;
         }
-        public async Task Adicionar(DocumentoBaixa model)
+        public async Task<DocumentoBaixa> Adicionar(DocumentoBaixa model)
         {
             if (!ExecutarValidacao(new DocumentoBaixaValidation(), model))
-                return;
+                return null;
 
-            if (await RegistroExistente(model)) return;
+            if (await RegistroExistente(model)) 
+                return null;
 
             await _repository.Adicionar(model);
+            return model;
         }
 
         public async Task Atualizar(DocumentoBaixa model)
@@ -43,12 +46,7 @@ namespace App.Service.Services
         {
             await _repository.Remover(id);
         }
-
-        public void Dispose()
-        {
-            _repository?.Dispose();
-        }
-
+        
         private async Task<bool> RegistroExistente(DocumentoBaixa model)
         {
             var item = await _repository.Buscar(f => f.Id == model.Id);
@@ -58,6 +56,11 @@ namespace App.Service.Services
             Notificar("Já existe um registro cadastrado");
 
             return true;
+        }
+
+        public void Dispose()
+        {
+            _repository?.Dispose();
         }
 
     }

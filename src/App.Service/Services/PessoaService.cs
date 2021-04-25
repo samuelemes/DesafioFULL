@@ -19,18 +19,24 @@ namespace App.Service.Services
         {
             _repository = repository;
         }
-        public async Task Adicionar(Pessoa model)
+        public async Task<Pessoa> Adicionar(Pessoa model)
         {
-            if (!ExecutarValidacao(new PessoaValidation(), model))
-                return;
+            model = await FormatarCPFParaGravacao(model);
 
-            if (await RegistroExistente(model)) return;
+            if (!ExecutarValidacao(new PessoaValidation(), model))
+                return null;
+
+            if (await RegistroExistente(model)) 
+                return null;
 
             await _repository.Adicionar(model);
+            return model;
         }
 
         public async Task Atualizar(Pessoa model)
         {
+            model = await FormatarCPFParaGravacao(model);
+
             if (!ExecutarValidacao(new PessoaValidation(), model))
                 return;
 
@@ -44,11 +50,6 @@ namespace App.Service.Services
             await _repository.Remover(id);
         }
 
-        public void Dispose()
-        {
-            _repository?.Dispose();
-        }
-
         private async Task<bool> RegistroExistente(Pessoa model)
         {
             var item = await _repository.Buscar(f => f.Id == model.Id);
@@ -58,6 +59,16 @@ namespace App.Service.Services
             Notificar("Já existe um registro cadastrado");
 
             return true;
+        }
+
+        private async Task<Pessoa> FormatarCPFParaGravacao(Pessoa model) {
+            model.Cpf = model.Cpf.Replace(".", "").Replace("-","");
+            return model;
+        }
+
+        public void Dispose()
+        {
+            _repository?.Dispose();
         }
 
     }

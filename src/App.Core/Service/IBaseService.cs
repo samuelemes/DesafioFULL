@@ -6,7 +6,7 @@ namespace App.Core.Service
 {
     public interface IBaseService<T> : IDisposable where T : Entity
     {
-        Task Adicionar(T entity);
+        Task<T> Adicionar(T entity);
         Task Atualizar(T entity);
         Task Remover(int id);
     }

@@ -10,9 +10,6 @@ namespace App.Service.Models
             RuleFor(x => x.IdPessoa)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
 
-            RuleFor(x => x.Numero)
-                .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
-
             RuleFor(x => x.DataVencimento)
                 .NotEmpty().WithMessage("O campo {PropertyName} precisa ser fornecido");
         }

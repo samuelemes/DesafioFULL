@@ -35,7 +35,6 @@ namespace App.Core.Repository
             return await DbSet.AsNoTracking().Where(predicate).ToListAsync();
         }
 
-
         public virtual async Task Adicionar(TEntity entity)
         {
             DbSet.Add(entity);

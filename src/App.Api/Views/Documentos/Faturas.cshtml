@@ -1,14 +1,10 @@
 ﻿@model IEnumerable<App.Api.ViewModels.DocumentoViewModel>
 
 @{
-    ViewBag.Title = "Lista de Títulos em atraso";
+    ViewBag.Title = "Lista de Títulos";
 }
 
 <h2>@ViewBag.Title</h2>
-
-<div>
-    <a href="@Url.Action("Create")" class="btn btn-primary">Novo</a><br /><br />
-</div>
 
 <table class="table">
     <tr>
@@ -22,7 +18,7 @@
             @Html.DisplayNameFor(model => model.QtdeParcelas)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ValorOriginal)
+            @Html.DisplayNameFor(model => model.Valor)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DiasEmAtrado)
@@ -45,7 +41,7 @@
             @Html.DisplayFor(modelItem => item.QtdeParcelas)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.DocumentoOrigem.Valor)
+            @Html.DisplayFor(modelItem => item.Valor)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DiasEmAtrado)

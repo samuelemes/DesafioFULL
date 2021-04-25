@@ -1,10 +1,12 @@
 ﻿using App.Api.ViewModels;
 using App.Data.Repository.Interfaces;
+using App.Domain.Models;
 using App.Service.Services.Interfaces;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace App.Api.Controllers
@@ -24,11 +26,76 @@ namespace App.Api.Controllers
             _service = service;
             _mapper = mapper;
         }
-        public async Task<ActionResult> Index()
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Faturas()
         {
-            return View(_mapper.Map<IEnumerable<DocumentoViewModel>>(await _repository.ObterTodos()));
+            var list = await ObterFaturas();
+
+            return View(list);
         }
 
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Index()
+        {
+            var list = await _repository.ObterDocumentoEmAtraso();
+
+            return View(FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list)));
+        }
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> TituloAVencer()
+        {
+            var list = await _repository.ObterDocumentoAVencer();
+            return View(FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list)));
+        }
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> TituloPagos()
+        {
+            var list = await _repository.ObterDocumentoPagos();
+            var result = new List<DocumentoViewModel>();
+
+            foreach (var item in list)
+            {
+                var doc = _mapper.Map<DocumentoViewModel>(item);
+                var baixa = item.Baixas.Where(s => s.idDocumento == item.Id).FirstOrDefault();
+
+                doc.DataPagamento = baixa.DataBaixa;
+                doc.ValorPago = baixa.Valor;
+                doc.ValorDesconto = baixa.ValorDesconto;
+
+                result.Add(doc);
+            }
+
+            return View(result);
+        }
+
+
+
+
+
+
+
+
+
+
+        [HttpGet]
         public ActionResult Create()
         {
             return View();
@@ -36,11 +103,45 @@ namespace App.Api.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult> Create(DocumentoViewModel model)
         {
             try
             {
-                return RedirectToAction(nameof(Index));
+                if(ModelState.IsValid)
+                {
+                    if(model.TipoDocumento == TipoDocumentoViewModel.Fatura)
+                    {
+                        var datVencimento = model.DataVencimento;
+
+                        #region ADICIONAR A FATURA DE ORIGEM
+                            model.ValorOriginal = model.Valor;
+                            model.Valor = model.Valor * model.QtdeParcelas;
+                            model.Parcela = 0;
+                            model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
+                            var fatura = await _service.Adicionar(_mapper.Map<Documento>(model));
+                        #endregion
+
+
+                        model.idDocumentoOrigem = fatura.Id;
+                        model.Valor = model.ValorOriginal;
+                        model.TipoDocumento = TipoDocumentoViewModel.Titulo;
+
+                        for (int i = 1; i < model.QtdeParcelas; i++)
+                        {
+                            model.Id = 0;
+                            model.Parcela = i;
+                            await _service.Adicionar(_mapper.Map<Documento>(model));
+                            model.DataVencimento = datVencimento.AddMonths(i);
+                        }
+                    } else
+                    {
+                        model.Parcela = 1;
+                        await _service.Adicionar(_mapper.Map<Documento>(model));
+                    }
+                    return RedirectToAction("Index");
+                }
+
+                return View(model);
             }
             catch
             {
@@ -48,42 +149,117 @@ namespace App.Api.Controllers
             }
         }
 
-        public ActionResult Edit(int id)
+
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            var model = await _repository.ObterDocumentoFullLoad(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return View(_mapper.Map<DocumentoViewModel>(model));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<ActionResult> Edit(DocumentoViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                await _service.Atualizar(_mapper.Map<Documento>(model));
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
 
-        public ActionResult Delete(int id)
+
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            var model = await _repository.ObterDocumentoFullLoad(id);
+
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return View(_mapper.Map<DocumentoViewModel>(model));
         }
 
-        [HttpPost]
+
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var model = await ObterRegistro(id);
+            if (model == null)
+            {
+                return NotFound();
+            }
+            return View(model);
+        }
+
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            try
+            var model = await ObterRegistro(id);
+
+            if (model == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
+
+            await _service.Remover(id);
+
+            return RedirectToAction("Index");
         }
+
+
+
+
+
+
+
+        private async Task<DocumentoViewModel> ObterRegistro(int id)
+        {
+            return _mapper.Map<DocumentoViewModel>(await _repository.ObterPorId(id));
+        }
+
+        private async Task<ICollection<DocumentoViewModel>> ObterFaturas()
+        {
+            var list = _mapper.Map<ICollection<DocumentoViewModel>>(await _repository.ObterFaturasFullLoad());
+            /*Esta parte poderia estar dentro de uma camada tipo App.ApiService, pois, tem algumas regras que não deveriam estar diretamente na Controller*/
+            return FormatarListaDocumentos(list);
+        }
+
+        private ICollection<DocumentoViewModel> FormatarListaDocumentos(ICollection<DocumentoViewModel> documentos)
+        {
+            foreach (var item in documentos)
+            {
+                item.DiasEmAtrado = (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays > 0 ? (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays : 0;
+                item.QtdeParcelas = item.TipoDocumento == TipoDocumentoViewModel.Fatura ? item.Parcela : item.DocumentoOrigem.Parcela;
+                item.ValorAtualizado = item.Valor
+                                                + (item.Multa.Value > 1 ? item.Multa.Value / 100 : item.Multa.Value)
+                                                + (item.Valor * (item.Juros.Value > 1 ? item.Juros.Value / 100 : item.Juros.Value) / 30 * item.DiasEmAtrado.Value);
+            }
+
+            return documentos;
+        }
+
     }
 }
