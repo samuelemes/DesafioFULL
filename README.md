@@ -1,5 +1,6 @@
 # DesafioFULL
 App desenvolvido com Angular e Razor, DevExtreme, C#, SQL e EFCore para cadastro e listagem de dívidas.
+Ainda da para melhorar muito, há uma necessidade de se criar uma camada de App.ApiService... para que toda a regra de negócios saia da controller e fique nesta camada proposta.
 
 ## Instruções de instalação
 1. Clone o repositório
