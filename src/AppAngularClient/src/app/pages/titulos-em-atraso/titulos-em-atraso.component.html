@@ -16,7 +16,6 @@
         title="Cadastro de Títulos"
         [showTitle]="true">
     </dxo-popup>
-    <dx-form id="form" [formData]="model">
       <dxo-form>
           <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
 
@@ -43,7 +42,7 @@
 
 
               <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                <dxi-item dataField="dataVencimento" format="shortDate" [label]="{text: 'Data de Vencimento'}">
+                <dxi-item dataField="dataVencimento" format="shortDate" [label]="{text: 'Data de Vencimento'}" [editorOptions]="{ mask: '##/##/####'}">
                   <dxi-validation-rule type="required"></dxi-validation-rule>
                 </dxi-item>
                 <dxi-item dataField="qtdeParcelas" [label]="{text: 'Parcelas'}">
@@ -65,7 +64,6 @@
               </dxi-item>
             </dxi-item>
       </dxo-form>
-    </dx-form>
   </dxo-editing>
 
   <dxi-column dataField="tipoDocumento" caption="Tipo de Documento" [visible]="false">

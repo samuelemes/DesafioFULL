@@ -57,7 +57,7 @@ export abstract class BaseGridComponent<
         protected service: TService,
         protected isSetDataSource?: boolean
     ) {
-      // this.fillDataSource();
+      this.fillDataSource();
      }
 
      fillDataSource() {
@@ -165,7 +165,6 @@ export abstract class BaseGridComponent<
 
     ngAfterViewInit() {
         this.configurarGrid();
-
     }
     onSelectionChanged = (e) => {
     }

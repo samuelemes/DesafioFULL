@@ -35,9 +35,22 @@ export class TitulosEmAtrasoComponent extends BaseGridComponent<DocumentoService
 
     const that = this;
     this.dataSource = this.service.createDataSource({
+      key: 'id',
+          load: loadOptions => {
+            return new Promise(function(resolve, reject) {
+              return that.service.getTituloVencidos().subscribe(
+                (response: any) => {
+                  resolve(response || []);
+                },
+                error => {
+                  resolve([]);
+                }
+              );
+            });
+          },
       insert: value => {
         return new Promise(function(resolve, reject) {
-          return that.service.saveDocument(that.model);
+          return that.service.saveDocument(value);
         });
       },
     });

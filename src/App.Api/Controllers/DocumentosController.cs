@@ -40,78 +40,7 @@ namespace App.Api.Controllers
         }
 
 
-        #region only Angular
-            [HttpGet]
-            public ICollection<DocumentoViewModel> Get()
-            {
-                var list = _repository.ObterDocumentoEmAtraso();
 
-                return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
-            }
-            [HttpGet]
-            public ICollection<DocumentoViewModel> GetFaturas()
-            {
-                var list = ObterFaturas();
-
-                return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
-            }
-            [HttpGet]
-            public ICollection<DocumentoViewModel> GetDocumentosAVencer()
-            {
-                var list = _repository.ObterDocumentoAVencer();
-
-                return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
-            }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public DocumentoViewModel Create(DocumentoViewModel model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    if (model.TipoDocumento == TipoDocumentoViewModel.Fatura)
-                    {
-                        var datVencimento = model.DataVencimento;
-
-                        #region ADICIONAR A FATURA DE ORIGEM
-                        model.ValorOriginal = model.Valor;
-                        model.Valor = model.Valor * model.QtdeParcelas;
-                        model.Parcela = 0;
-                        model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
-                        var fatura = _service.Adicionar(_mapper.Map<Documento>(model));
-                        #endregion
-
-
-                        model.idDocumentoOrigem = fatura.Id;
-                        model.Valor = model.ValorOriginal;
-                        model.TipoDocumento = TipoDocumentoViewModel.Titulo;
-
-                        for (int i = 1; i < model.QtdeParcelas; i++)
-                        {
-                            model.Id = 0;
-                            model.Parcela = i;
-                            _service.Adicionar(_mapper.Map<Documento>(model));
-                            model.DataVencimento = datVencimento.AddMonths(i);
-                        }
-                    }
-                    else
-                    {
-                        model.Parcela = 1;
-                        _service.Adicionar(_mapper.Map<Documento>(model));
-                    }
-                    return null;
-                }
-
-                return model;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        #endregion
 
         [HttpGet]
         public async Task<ActionResult> Index()
@@ -173,7 +102,7 @@ namespace App.Api.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateDocument(DocumentoViewModel model)
+        public async Task<ActionResult> Create(DocumentoViewModel model)
         {
             try
             {

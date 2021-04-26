@@ -76,12 +76,13 @@ namespace App.Api
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default","{controller=Documentos}/{action=Get}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=GetFaturas}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=GetDocumentosAVencer}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=CreateDocument}/{id?}");
-
                 endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetTituloVencidos}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetFaturas}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetDocumentosAVencer}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=CreateDocument}/{id?}");
+
             });
         }
     }

@@ -14,9 +14,17 @@ export class DocumentoService extends BaseService<DocumentoModel> {
     constructor(
         protected http: HttpClient,
     ) {
-      super(http, 'Documentos');
+      super(http, 'Titulos');
     }
 
+    public getTituloVencidos(): Observable<DocumentoModel[]> {
+      return this.https.get<DocumentoModel[]>(this._httpAdress + this.url + '/GetTituloVencidos', { headers: this._headers }).pipe(
+        map(data => data),
+        catchError(error => {
+          return throwError(error);
+        })
+      );
+    }
 
 
     public getFaturas(): Observable<DocumentoModel[]> {
