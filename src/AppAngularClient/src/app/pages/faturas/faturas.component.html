@@ -1,0 +1,25 @@
+<h2 class="content-block">Faturas</h2>
+
+<dx-data-grid class="content-block dx-card responsive-paddings"
+  [dataSource]="dataSource"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+
+  <dxo-paging [pageSize]="20"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+
+  <dxi-column dataField="tipoDocumento" caption="Tipo de Documento" [visible]="false">
+    <dxo-lookup [dataSource]="tipoDocumentoDataSource" displayExpr="value" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="id" caption="Número"></dxi-column>
+  <dxi-column dataField="pessoa.nome" caption="Nome do devedor"></dxi-column>
+  <dxi-column dataField="qtdeParcelas" caption="Qtde de Parcelas"></dxi-column>
+  <dxi-column dataField="documentoOrigem.Valor" caption="Valor Original"></dxi-column>
+  <dxi-column dataField="diasEmAtrado" caption="Dias em atraso"></dxi-column>
+  <dxi-column dataField="valorAtualizado" caption="Valor Atualizado"></dxi-column>
+</dx-data-grid>

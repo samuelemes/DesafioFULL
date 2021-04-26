@@ -59,10 +59,28 @@ namespace App.Api
 
             app.UseRouting();
 
+            app.UseCors(cor =>
+            {
+                cor.AllowAnyHeader();
+                cor.AllowAnyMethod();
+                cor.AllowAnyOrigin();
+            });
+
+            //app.UseHttpsRedirection();
+            app.UseStaticFiles();
+
+            app.UseRouting();
+            app.UseCors();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("default","{controller=Documentos}/{action=Get}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=GetFaturas}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=GetDocumentosAVencer}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=CreateDocument}/{id?}");
+
                 endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}");
             });
         }

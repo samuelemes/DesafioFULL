@@ -1,0 +1,81 @@
+<h2 class="content-block">Títulos em Atraso</h2>
+
+<dx-data-grid class="content-block dx-card responsive-paddings"
+  [dataSource]="dataSource"
+  [showBorders]="false"
+  [focusedRowEnabled]="true"
+  [focusedRowIndex]="0"
+  [columnAutoWidth]="true"
+  [columnHidingEnabled]="true">
+
+  <dxo-paging [pageSize]="20"></dxo-paging>
+  <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+  <dxo-filter-row [visible]="true"></dxo-filter-row>
+  <dxo-editing [allowAdding]="true">
+    <dxo-popup
+        title="Cadastro de Títulos"
+        [showTitle]="true">
+    </dxo-popup>
+    <dx-form id="form" [formData]="model">
+      <dxo-form>
+          <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
+
+              <dxi-item dataField="tipoDocumento" [label]="{text: 'Tipo'}">
+                <dxi-validation-rule type="required"></dxi-validation-rule>
+              </dxi-item>
+
+
+              <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                <dxi-item dataField="pessoa.Nome"  [label]="{text: 'Nome do Devedor'}">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="pessoa.Cpf"  [label]="{text: 'CPF'}"
+                    [editorOptions]="{
+                                      mask: cpfMask.format,
+                                      useMaskedValue: true,
+                                      maskInvalidMessage: 'O CPF não é válido',
+                                      placeholder: cpfMask.format
+                                  }"
+                >
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-item>
+              </dxi-item>
+
+
+              <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
+                <dxi-item dataField="dataVencimento" format="shortDate" [label]="{text: 'Data de Vencimento'}">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-item>
+                <dxi-item dataField="qtdeParcelas" [label]="{text: 'Parcelas'}">
+                  <dxi-validation-rule type="required"></dxi-validation-rule>
+                </dxi-item>
+              </dxi-item>
+
+
+              <dxi-item itemType="group" caption="Valores" [colCount]="3" [colSpan]="3">
+                  <dxi-item dataField="Valor">
+                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                  </dxi-item>
+                  <dxi-item dataField="Multa">
+                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                  </dxi-item>
+                  <dxi-item dataField="Juros">
+                    <dxi-validation-rule type="required"></dxi-validation-rule>
+                  </dxi-item>
+              </dxi-item>
+            </dxi-item>
+      </dxo-form>
+    </dx-form>
+  </dxo-editing>
+
+  <dxi-column dataField="tipoDocumento" caption="Tipo de Documento" [visible]="false">
+    <dxo-lookup [dataSource]="tipoDocumentoDataSource" displayExpr="value" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+  <dxi-column dataField="id" caption="Número"></dxi-column>
+  <dxi-column dataField="pessoa.nome" caption="Nome do devedor"></dxi-column>
+  <dxi-column dataField="qtdeParcelas" caption="Qtde de Parcelas"></dxi-column>
+  <dxi-column dataField="documentoOrigem.Valor" caption="Valor Original"></dxi-column>
+  <dxi-column dataField="diasEmAtrado" caption="Dias em atraso"></dxi-column>
+  <dxi-column dataField="valorAtualizado" caption="Valor Atualizado"></dxi-column>
+</dx-data-grid>
