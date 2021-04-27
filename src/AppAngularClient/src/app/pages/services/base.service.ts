@@ -10,7 +10,7 @@ export abstract class BaseService<T extends IBaseModel>
 
     public dataSource: any = {};
     public _httpAdress = 'http://localhost:9000/';
-    keyName = 'id';
+    keyName = 'Id';
     public model: T;
     protected _headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json'
@@ -32,7 +32,6 @@ export abstract class BaseService<T extends IBaseModel>
     }
 
     public get(): Observable<T[]> {
-      console.log('base.service');
       return this.https.get<T[]>(this._httpAdress + this.url, { headers: this._headers }).pipe(
         map(data => data),
         catchError(error => {

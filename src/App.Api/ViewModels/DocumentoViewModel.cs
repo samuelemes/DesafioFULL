@@ -44,31 +44,31 @@ namespace App.Api.ViewModels
 
 
         [DataType(DataType.Currency)]
-        public decimal Valor { get; set; }
+        public decimal Valor { get; set; } = 0;
 
 
         
         [Display(Name = "Valor original")]
         [DataType(DataType.Currency)]
-        public decimal ValorOriginal { get; set; }
+        public decimal ValorOriginal { get; set; } = 0;
 
         [Display(Name = "Valor Pago")]
         [DataType(DataType.Currency)]
-        public decimal ValorPago { get; set; }
+        public decimal ValorPago { get; set; } = 0;
 
         [Display(Name = "Valor Desconto")]
         [DataType(DataType.Currency)]
-        public decimal ValorDesconto { get; set; }
+        public decimal ValorDesconto { get; set; } = 0;
 
 
 
         [Display(Name = "Valor atualizado")]
         [DataType(DataType.Currency)]
-        public decimal ValorAtualizado { get; set; }
+        public decimal ValorAtualizado { get; set; } = 0;
 
 
-        
+
         [Display(Name = "Dias em atraso")]
-        public int? DiasEmAtrado { get; set; }
+        public int? DiasEmAtrado { get; set; } = 0;
     }
 }

@@ -1,11 +1,6 @@
 import { IBaseModel } from './IBase-model';
 export abstract class BaseModel implements IBaseModel {
-    public id: number;
-
-    cod_usuario_inclusao: number;
-    dat_inclusao: Date;
-    cod_usuario_alteracao?: number;
-    dat_alteracao: Date;
+    public Id: number;
 
     constructor(model?: any) {
       if (model != null || model !== undefined) {
@@ -14,7 +9,7 @@ export abstract class BaseModel implements IBaseModel {
     }
 
     public getId(): number {
-      return this.id;
+      return this.Id;
     }
 
     copyFrom(o: any): any {

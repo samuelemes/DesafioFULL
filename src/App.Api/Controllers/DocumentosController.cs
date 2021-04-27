@@ -101,7 +101,7 @@ namespace App.Api.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(DocumentoViewModel model)
         {
             try

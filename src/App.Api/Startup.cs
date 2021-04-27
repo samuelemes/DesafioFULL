@@ -26,6 +26,17 @@ namespace App.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                   .AllowAnyMethod()
+                   .AllowAnyHeader()
+                   .SetIsOriginAllowed((host) => true)
+                   .AllowCredentials());
+            });
+
             services.AddControllersWithViews();
 
             services.AddDbContext<AppDbContext>();
@@ -41,7 +52,14 @@ namespace App.Api
 
             services.AddSingleton(AutoMapperConfig.GetMapperConfiguration().CreateMapper());
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc(setupAction => {
+                setupAction.EnableEndpointRouting = false;
+                }).AddJsonOptions(jsonOptions =>
+                {
+                    jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+                })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddControllers();
         }
 
@@ -59,29 +77,29 @@ namespace App.Api
 
             app.UseRouting();
 
-            app.UseCors(cor =>
-            {
-                cor.AllowAnyHeader();
-                cor.AllowAnyMethod();
-                cor.AllowAnyOrigin();
-            });
+            app.UseCors("CorsPolicy");
+            app.UseStaticFiles();
 
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
             app.UseCors();
+            app.UseMvc();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute("default","{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("default", "{controller=Documentos}/{action=Index}/{id?}");
 
-                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetTituloVencidos}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetFaturas}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=GetDocumentosAVencer}/{id?}");
-                endpoints.MapControllerRoute("default", "{controller=Titulos}/{action=CreateDocument}/{id?}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=GetTituloVencidos}/{id?}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=GetFaturas}/{id?}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=Create}/{id?}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=Create}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=Post}/{id?}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=Post}");
+                endpoints.MapControllerRoute("Titulos", "{controller=Titulos}/{action=CreateDocument}/{id?}");
 
             });
         }

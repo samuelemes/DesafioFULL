@@ -20,7 +20,6 @@ export class TitulosEmAtrasoComponent extends BaseGridComponent<DocumentoService
   _enableGridAdding = true;
   public cpfMask = MasksService.masks.cpf;
   cpfValidado = false;
-  model: DocumentoModel = new DocumentoModel();
 
   constructor(
     router: Router,
@@ -33,26 +32,6 @@ export class TitulosEmAtrasoComponent extends BaseGridComponent<DocumentoService
       {id: 2, value: 'Titulo'},
     ];
 
-    const that = this;
-    this.dataSource = this.service.createDataSource({
-      key: 'id',
-          load: loadOptions => {
-            return new Promise(function(resolve, reject) {
-              return that.service.getTituloVencidos().subscribe(
-                (response: any) => {
-                  resolve(response || []);
-                },
-                error => {
-                  resolve([]);
-                }
-              );
-            });
-          },
-      insert: value => {
-        return new Promise(function(resolve, reject) {
-          return that.service.saveDocument(value);
-        });
-      },
-    });
+    this.dataSource = this.service.createDataSource();
   }
 }

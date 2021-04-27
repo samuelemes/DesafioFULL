@@ -17,8 +17,9 @@ export class DocumentoService extends BaseService<DocumentoModel> {
       super(http, 'Titulos');
     }
 
-    public getTituloVencidos(): Observable<DocumentoModel[]> {
-      return this.https.get<DocumentoModel[]>(this._httpAdress + this.url + '/GetTituloVencidos', { headers: this._headers }).pipe(
+    public get(): Observable<DocumentoModel[]> {
+      this.url += '/Titulos';
+      return this.https.get<DocumentoModel[]>(this._httpAdress + 'Titulos/GetTituloVencidos', { headers: this._headers }).pipe(
         map(data => data),
         catchError(error => {
           return throwError(error);
@@ -28,7 +29,7 @@ export class DocumentoService extends BaseService<DocumentoModel> {
 
 
     public getFaturas(): Observable<DocumentoModel[]> {
-      return this.https.get<DocumentoModel[]>(this._httpAdress + this.url + '/GetFaturas', { headers: this._headers }).pipe(
+      return this.https.get<DocumentoModel[]>(this._httpAdress + 'Titulos/GetFaturas', { headers: this._headers }).pipe(
         map(data => data),
         catchError(error => {
           return throwError(error);
@@ -37,7 +38,7 @@ export class DocumentoService extends BaseService<DocumentoModel> {
     }
 
     public getTituloAVencer(): Observable<DocumentoModel[]> {
-      return this.https.get<DocumentoModel[]>(this._httpAdress + this.url + '/GetDocumentosAVencer', { headers: this._headers }).pipe(
+      return this.https.get<DocumentoModel[]>(this._httpAdress + 'Titulos/GetDocumentosAVencer', { headers: this._headers }).pipe(
         map(data => data),
         catchError(error => {
           return throwError(error);
@@ -45,18 +46,8 @@ export class DocumentoService extends BaseService<DocumentoModel> {
       );
     }
 
-    public saveDocument(model: DocumentoModel) {
-      this.url += '/CreateDocument';
-      console.log(this.url);
-      this.create(model);
-    }
-
-    getNew(model?: any): DocumentoModel {
-      let instance = this.factory<DocumentoModel>(model);
-
-      if (model)
-        instance.copyFrom(model);
-
-      return instance;
+    public create(model: any): Observable<DocumentoModel> {
+      this.url = 'Titulos/Post';
+      return super.create(model);
     }
 }

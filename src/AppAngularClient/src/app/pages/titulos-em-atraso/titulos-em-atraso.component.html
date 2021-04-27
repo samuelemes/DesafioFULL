@@ -16,19 +16,19 @@
         title="Cadastro de Títulos"
         [showTitle]="true">
     </dxo-popup>
-      <dxo-form>
+    <dxo-form>
           <dxi-item itemType="group" [colCount]="1" [colSpan]="2">
 
-              <dxi-item dataField="tipoDocumento" [label]="{text: 'Tipo'}">
+              <dxi-item dataField="TipoDocumento" [label]="{text: 'Tipo'}">
                 <dxi-validation-rule type="required"></dxi-validation-rule>
               </dxi-item>
 
 
               <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                <dxi-item dataField="pessoa.Nome"  [label]="{text: 'Nome do Devedor'}">
+                <dxi-item dataField="Pessoa.Nome" [label]="{text: 'Nome do Devedor'}">
                   <dxi-validation-rule type="required"></dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="pessoa.Cpf"  [label]="{text: 'CPF'}"
+                <dxi-item dataField="Pessoa.Cpf" [label]="{text: 'CPF'}"
                     [editorOptions]="{
                                       mask: cpfMask.format,
                                       useMaskedValue: true,
@@ -42,10 +42,10 @@
 
 
               <dxi-item itemType="group" [colCount]="2" [colSpan]="2">
-                <dxi-item dataField="dataVencimento" format="shortDate" [label]="{text: 'Data de Vencimento'}" [editorOptions]="{ mask: '##/##/####'}">
+                <dxi-item dataField="DataVencimento" editorType="dxDateBox" format="shortDate" [label]="{text: 'Data de Vencimento'}">
                   <dxi-validation-rule type="required"></dxi-validation-rule>
                 </dxi-item>
-                <dxi-item dataField="qtdeParcelas" [label]="{text: 'Parcelas'}">
+                <dxi-item dataField="QtdeParcelas" [label]="{text: 'Parcelas'}">
                   <dxi-validation-rule type="required"></dxi-validation-rule>
                 </dxi-item>
               </dxi-item>
@@ -66,14 +66,19 @@
       </dxo-form>
   </dxo-editing>
 
-  <dxi-column dataField="tipoDocumento" caption="Tipo de Documento" [visible]="false">
+  <dxi-column dataField="TipoDocumento" caption="Tipo de Documento" [visible]="false">
     <dxo-lookup [dataSource]="tipoDocumentoDataSource" displayExpr="value" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
-  <dxi-column dataField="id" caption="Número"></dxi-column>
-  <dxi-column dataField="pessoa.nome" caption="Nome do devedor"></dxi-column>
-  <dxi-column dataField="qtdeParcelas" caption="Qtde de Parcelas"></dxi-column>
-  <dxi-column dataField="documentoOrigem.Valor" caption="Valor Original"></dxi-column>
-  <dxi-column dataField="diasEmAtrado" caption="Dias em atraso"></dxi-column>
-  <dxi-column dataField="valorAtualizado" caption="Valor Atualizado"></dxi-column>
+  <dxi-column dataField="Id" caption="Número"></dxi-column>
+  <dxi-column dataField="Pessoa.Nome" caption="Nome do devedor"></dxi-column>
+  <dxi-column dataField="Pessoa.Cpf" caption="CPF" [visible]="false"></dxi-column>
+  <dxi-column dataField="DataVencimento" [visible]="false" editorType="dxDateBox" format="shortDate"></dxi-column>
+  <dxi-column dataField="Valor" [visible]="false"></dxi-column>
+  <dxi-column dataField="Multa" [visible]="false"></dxi-column>
+  <dxi-column dataField="Juros" [visible]="false"></dxi-column>
+  <dxi-column dataField="QtdeParcelas" caption="Qtde de Parcelas"></dxi-column>
+  <dxi-column dataField="DocumentoOrigem.Valor" caption="Valor Original"></dxi-column>
+  <dxi-column dataField="DiasEmAtrado" caption="Dias em atraso"></dxi-column>
+  <dxi-column dataField="ValorAtualizado" caption="Valor Atualizado"></dxi-column>
 </dx-data-grid>

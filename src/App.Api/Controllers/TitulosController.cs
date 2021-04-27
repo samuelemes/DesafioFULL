@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace App.Api.Controllers
 {
@@ -30,80 +31,81 @@ namespace App.Api.Controllers
 
         #region only Angular
 
-            [HttpGet]
+            [Microsoft.AspNetCore.Mvc.HttpGet]
             public ICollection<DocumentoViewModel> GetTituloVencidos()
             {
                 var list = _repository.ObterDocumentoEmAtraso();
 
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
-            [HttpGet]
+            [Microsoft.AspNetCore.Mvc.HttpGet]
             public ICollection<DocumentoViewModel> GetFaturas()
             {
                 var list = ObterFaturas();
 
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
-            [HttpGet]
+            [Microsoft.AspNetCore.Mvc.HttpGet]
             public ICollection<DocumentoViewModel> GetDocumentosAVencer()
             {
                 var list = _repository.ObterDocumentoAVencer();
 
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
-            [HttpPost]
-            [ValidateAntiForgeryToken]
-            public DocumentoViewModel Create(DocumentoViewModel model)
+
+        [Microsoft.AspNetCore.Mvc.HttpPost]
+        public async Task<ActionResult<DocumentoViewModel>> Post(DocumentoViewModel model)
+        {
+            try
             {
-                try
+                if (ModelState.IsValid)
                 {
-                    if (ModelState.IsValid)
+                    if (model.TipoDocumento == TipoDocumentoViewModel.Fatura)
                     {
-                        if (model.TipoDocumento == TipoDocumentoViewModel.Fatura)
+                        var datVencimento = model.DataVencimento;
+
+                        #region ADICIONAR A FATURA DE ORIGEM
+                        model.ValorOriginal = model.Valor;
+                        model.Valor = model.Valor * model.QtdeParcelas;
+                        model.Parcela = 0;
+                        model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
+                        var fatura = await _service.Adicionar(_mapper.Map<Documento>(model));
+                        #endregion
+
+
+                        model.idDocumentoOrigem = fatura.Id;
+                        model.Valor = model.ValorOriginal;
+                        model.TipoDocumento = TipoDocumentoViewModel.Titulo;
+
+                        for (int i = 1; i < model.QtdeParcelas; i++)
                         {
-                            var datVencimento = model.DataVencimento;
-
-                            #region ADICIONAR A FATURA DE ORIGEM
-                            model.ValorOriginal = model.Valor;
-                            model.Valor = model.Valor * model.QtdeParcelas;
-                            model.Parcela = 0;
-                            model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
-                            var fatura = _service.Adicionar(_mapper.Map<Documento>(model));
-                            #endregion
-
-
-                            model.idDocumentoOrigem = fatura.Id;
-                            model.Valor = model.ValorOriginal;
-                            model.TipoDocumento = TipoDocumentoViewModel.Titulo;
-
-                            for (int i = 1; i < model.QtdeParcelas; i++)
-                            {
-                                model.Id = 0;
-                                model.Parcela = i;
-                                _service.Adicionar(_mapper.Map<Documento>(model));
-                                model.DataVencimento = datVencimento.AddMonths(i);
-                            }
+                            model.Id = 0;
+                            model.Parcela = i;
+                            await _service.Adicionar(_mapper.Map<Documento>(model));
+                            model.DataVencimento = datVencimento.AddMonths(i);
                         }
-                        else
-                        {
-                            model.Parcela = 1;
-                            _service.Adicionar(_mapper.Map<Documento>(model));
-                        }
-                        return null;
                     }
-
-                    return model;
-                }
-                catch
-                {
+                    else
+                    {
+                        model.Parcela = 1;
+                        await _service.Adicionar(_mapper.Map<Documento>(model));
+                    }
                     return null;
                 }
+
+                return new ObjectResult(model);
             }
+            catch
+            {
+                return null;
+            }
+        }
 
         #endregion
 
 
-        [HttpGet]
+
+        [Microsoft.AspNetCore.Mvc.HttpGet]
         public async Task<ActionResult> Index()
         {
             var list = await _repository.ObterDocumentoEmAtraso();

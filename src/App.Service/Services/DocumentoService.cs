@@ -61,6 +61,8 @@ namespace App.Service.Services
 
         private async Task<Documento> ObterPessoaDocumento(Documento model)
         {
+            if (model.Pessoa == null) return null;
+
             if (model.IdPessoa == 0)
             {
                 var pessoa = await _pessoaRepository.ObterPessoaPorCpf(model.Pessoa.Cpf);
