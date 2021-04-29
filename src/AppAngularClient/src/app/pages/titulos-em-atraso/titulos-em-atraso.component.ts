@@ -33,5 +33,26 @@ export class TitulosEmAtrasoComponent extends BaseGridComponent<DocumentoService
     ];
 
     this.dataSource = this.service.createDataSource();
+    // this.loadDataSource();
+  }
+
+  onRowUpdating1(e) {
+    console.log(e);
+    super.onRowUpdating(e);
+  }
+
+  loadDataSource() {
+    const that = this;
+    this.dataSource = this.service.createDataSource({
+      load: options => {
+        return new Promise((resolve, reject) => {
+          that.service.get().subscribe((res: any) => {
+            resolve(res.data);
+          }, error => {
+            reject('Falha ao carregar dados!');
+          })
+        })
+      }
+    });
   }
 }

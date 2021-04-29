@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Http;
 
 namespace App.Api.Controllers
 {
@@ -31,21 +30,21 @@ namespace App.Api.Controllers
 
         #region only Angular
 
-            [Microsoft.AspNetCore.Mvc.HttpGet]
+            [HttpGet]
             public ICollection<DocumentoViewModel> GetTituloVencidos()
             {
                 var list = _repository.ObterDocumentoEmAtraso();
 
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
-            [Microsoft.AspNetCore.Mvc.HttpGet]
+            [HttpGet]
             public ICollection<DocumentoViewModel> GetFaturas()
             {
                 var list = ObterFaturas();
 
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
-            [Microsoft.AspNetCore.Mvc.HttpGet]
+            [HttpGet]
             public ICollection<DocumentoViewModel> GetDocumentosAVencer()
             {
                 var list = _repository.ObterDocumentoAVencer();
@@ -53,59 +52,59 @@ namespace App.Api.Controllers
                 return FormatarListaDocumentos(_mapper.Map<ICollection<DocumentoViewModel>>(list.Result));
             }
 
-        [Microsoft.AspNetCore.Mvc.HttpPost]
-        public async Task<ActionResult<DocumentoViewModel>> Post(DocumentoViewModel model)
-        {
-            try
+            [HttpPost]
+            [Route("Titulos"), ActionName("Post")]
+            public async Task<DocumentoViewModel> Post([FromBody] DocumentoViewModel model)
             {
-                if (ModelState.IsValid)
+                try
                 {
-                    if (model.TipoDocumento == TipoDocumentoViewModel.Fatura)
+                    if (ModelState.IsValid)
                     {
-                        var datVencimento = model.DataVencimento;
-
-                        #region ADICIONAR A FATURA DE ORIGEM
-                        model.ValorOriginal = model.Valor;
-                        model.Valor = model.Valor * model.QtdeParcelas;
-                        model.Parcela = 0;
-                        model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
-                        var fatura = await _service.Adicionar(_mapper.Map<Documento>(model));
-                        #endregion
-
-
-                        model.idDocumentoOrigem = fatura.Id;
-                        model.Valor = model.ValorOriginal;
-                        model.TipoDocumento = TipoDocumentoViewModel.Titulo;
-
-                        for (int i = 1; i < model.QtdeParcelas; i++)
+                        if (model.TipoDocumento == TipoDocumentoViewModel.Fatura)
                         {
-                            model.Id = 0;
-                            model.Parcela = i;
-                            await _service.Adicionar(_mapper.Map<Documento>(model));
-                            model.DataVencimento = datVencimento.AddMonths(i);
+                            var datVencimento = model.DataVencimento;
+
+                            #region ADICIONAR A FATURA DE ORIGEM
+                            model.ValorOriginal = model.Valor;
+                            model.Valor = model.Valor * model.QtdeParcelas;
+                            model.Parcela = 0;
+                            model.DataVencimento = datVencimento.AddMonths(model.QtdeParcelas);
+                            var fatura = await _service.Adicionar(_mapper.Map<Documento>(model));
+                            #endregion
+
+
+                            model.idDocumentoOrigem = fatura.Id;
+                            model.Valor = model.ValorOriginal;
+                            model.TipoDocumento = TipoDocumentoViewModel.Titulo;
+
+                            for (int i = 1; i < model.QtdeParcelas; i++)
+                            {
+                                model.Id = 0;
+                                model.Parcela = i;
+                                await _service.Adicionar(_mapper.Map<Documento>(model));
+                                model.DataVencimento = datVencimento.AddMonths(i);
+                            }
                         }
+                        else
+                        {
+                            model.Parcela = 1;
+                            await _service.Adicionar(_mapper.Map<Documento>(model));
+                        }
+                        return null;
                     }
-                    else
-                    {
-                        model.Parcela = 1;
-                        await _service.Adicionar(_mapper.Map<Documento>(model));
-                    }
+
+                    return model;
+                }
+                catch
+                {
                     return null;
                 }
-
-                return new ObjectResult(model);
             }
-            catch
-            {
-                return null;
-            }
-        }
-
         #endregion
 
 
 
-        [Microsoft.AspNetCore.Mvc.HttpGet]
+        [HttpGet]
         public async Task<ActionResult> Index()
         {
             var list = await _repository.ObterDocumentoEmAtraso();
@@ -126,7 +125,7 @@ namespace App.Api.Controllers
             foreach (var item in documentos)
             {
                 item.DiasEmAtrado = (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays > 0 ? (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays : 0;
-                item.QtdeParcelas = item.TipoDocumento == TipoDocumentoViewModel.Fatura ? item.Parcela : item.DocumentoOrigem.Parcela;
+                item.QtdeParcelas = item.TipoDocumento == TipoDocumentoViewModel.Fatura ? item.Parcela : 1;
                 item.ValorAtualizado = item.Valor
                                                 + (item.Multa.Value > 1 ? item.Multa.Value / 100 : item.Multa.Value)
                                                 + (item.Valor * (item.Juros.Value > 1 ? item.Juros.Value / 100 : item.Juros.Value) / 30 * item.DiasEmAtrado.Value);

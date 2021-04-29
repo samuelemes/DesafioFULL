@@ -12,9 +12,10 @@ import { Observable } from 'rxjs/internal/Observable';
 export class DocumentoService extends BaseService<DocumentoModel> {
 
     constructor(
-        protected http: HttpClient,
+        protected http: HttpClient
     ) {
       super(http, 'Titulos');
+      this.baseUrl = 'http://localhost:9000/Titulos';
     }
 
     public get(): Observable<DocumentoModel[]> {
@@ -46,8 +47,10 @@ export class DocumentoService extends BaseService<DocumentoModel> {
       );
     }
 
-    public create(model: any): Observable<DocumentoModel> {
-      this.url = 'Titulos/Post';
+    public create(model: DocumentoModel): Observable<DocumentoModel> {
+      this.url = 'Titulos';
+      console.log(JSON.stringify(model));
+
       return super.create(model);
     }
 }

@@ -7,7 +7,7 @@ export class DocumentoModel extends BaseModel {
 
         public idDocumentoOrigem?: number;
         public TipoDocumento: TipoDocumentoModel;
-        public DocumentoOrigem: DocumentoModel = new DocumentoModel();
+        public DocumentoOrigem: DocumentoModel;
         public Pessoa: PessoaModel;
         public DataVencimento: Date;
         public DataPagamento?: Date;

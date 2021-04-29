@@ -1,6 +1,7 @@
 <h2 class="content-block">Títulos em Atraso</h2>
 
 <dx-data-grid class="content-block dx-card responsive-paddings"
+  (onRowUpdating)="onRowUpdating1($event)"
   [dataSource]="dataSource"
   [showBorders]="false"
   [focusedRowEnabled]="true"

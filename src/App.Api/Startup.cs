@@ -80,7 +80,7 @@ namespace App.Api
             app.UseCors("CorsPolicy");
             app.UseStaticFiles();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();

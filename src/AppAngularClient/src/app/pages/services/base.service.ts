@@ -56,7 +56,11 @@ export abstract class BaseService<T extends IBaseModel>
       return id != null ? this.update(model, id) : this.create(model);
     }
     public create(model: T): Observable<T> {
-      return this.https.post<T>(`${this._httpAdress + this.url}`, JSON.stringify(model)).pipe(
+      const args = {
+        headers: this._headers
+      };
+
+      return this.https.post<T>(`${this._httpAdress + this.url}`, JSON.stringify(model), args).pipe(
         map(data => data),
         catchError(error => {
           return throwError(error);

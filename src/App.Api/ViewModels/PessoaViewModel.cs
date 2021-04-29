@@ -12,7 +12,7 @@ namespace App.Api.ViewModels
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(11, ErrorMessage = "O campo {0} precisa ter {1} caracteres"), MaxLength(14)]
+        [StringLength(14, ErrorMessage = "O campo {0} precisa ter {1} à {2}caracteres"), MinLength(11)]
         [DisplayFormat(DataFormatString = "000\\.000\\.000-00")]
         [Display(Name = "Número do CPF")]
         public string Cpf { get; set; }

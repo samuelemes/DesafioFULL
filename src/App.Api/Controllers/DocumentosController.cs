@@ -251,7 +251,7 @@ namespace App.Api.Controllers
             foreach (var item in documentos)
             {
                 item.DiasEmAtrado = (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays > 0 ? (int)DateTime.Today.Subtract(item.DataVencimento).TotalDays : 0;
-                item.QtdeParcelas = item.TipoDocumento == TipoDocumentoViewModel.Fatura ? item.Parcela : item.DocumentoOrigem.Parcela;
+                item.QtdeParcelas = item.TipoDocumento == TipoDocumentoViewModel.Fatura ? item.Parcela : 1;
                 item.ValorAtualizado = item.Valor
                                                 + (item.Multa.Value > 1 ? item.Multa.Value / 100 : item.Multa.Value)
                                                 + (item.Valor * (item.Juros.Value > 1 ? item.Juros.Value / 100 : item.Juros.Value) / 30 * item.DiasEmAtrado.Value);
